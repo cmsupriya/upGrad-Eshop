@@ -1,4 +1,4 @@
-import React from 'react'
+import { React, useState, useEffect } from 'react'
 import './Navbar.css'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AppBar from '@mui/material/AppBar';
@@ -35,7 +35,7 @@ const Navbar = () => {
                             <Link to=''>Add Product</Link>
                         </li>
                         <li>
-                        <Link to="/Login">Login</Link>
+                        <Link to="/login">Login</Link>
                         </li>
                         <li>
                             <Link to='/signup'>SignUp</Link>

@@ -4,6 +4,7 @@ import './Login.css'
 import LockIcon from '@mui/icons-material/Lock';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import axios from 'axios';
 
 const Login = (props) => {
   const [email, setEmail] = useState('')
@@ -14,7 +15,20 @@ const Login = (props) => {
   const navigate = useNavigate()
 
   const onButtonClick = () => {
-    // You'll update this function later...
+    let payload = {
+      "username": email,
+      "password": password,
+    }
+
+    axios.post(
+      'http://localhost:8080/api/auth/signin',
+      payload,
+    ).then(result => {
+      localStorage.setItem("token", result.data.token);
+      return result.data;
+    }).catch(error => {
+      return error.message;
+    });
   }
 
   return (

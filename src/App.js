@@ -1,12 +1,12 @@
 import './App.css';
-import React from 'react';
+import { React } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from './components/SignUp/SignUp';
 import Navbar from './components/Navbar/Navbar';
 import Login from './components/Login/Login';
 import Home from './components/Home/Home';
 
-function App() {
+const App = () => {
   return (
       <Router>
       <Navbar/>
