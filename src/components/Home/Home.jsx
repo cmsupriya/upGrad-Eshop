@@ -2,10 +2,10 @@ import { React, useContext } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import "./Home.css";
-import Auth from "../../common/hooks/useAuth";
+import useAuth from "../../common/hooks/useAuth";
 
 const Home = () => {
-	const {AuthCtx} = Auth();
+	const {AuthCtx} = useAuth();
 
 	return (
 		<Box sx={{flexGrow: 1}}>

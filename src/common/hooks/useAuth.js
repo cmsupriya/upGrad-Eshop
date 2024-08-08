@@ -6,7 +6,7 @@ const AuthCtx = createContext();
 //Note: this hook is used for auth purposes and will be saved in browser cache
 const useAuth = () => {
 
-	let initialState = localStorage.getItem("logged_in_user_details");
+	let initialState = localStorage.getItem("ecommerce_upgrad_logged_in_user_details");
 
 	let persistInCache = (json) => {
 		initialState.user = json.username;
@@ -14,7 +14,7 @@ const useAuth = () => {
 		initialState.roles = json.roles;
 		initialState.accessToken = json.accessToken;
 		initialState.accessTokenTimeout = json.accessTokenTimeout;
-		localStorage.setItem("logged_in_user_details", JSON.stringify(initialState));
+		localStorage.setItem("ecommerce_upgrad_logged_in_user_details", JSON.stringify(initialState));
 	};
 
 	let clearCache = () => {
@@ -25,7 +25,7 @@ const useAuth = () => {
 			accessToken: null,
 			accessTokenTimeout: null,
 		};
-		localStorage.setItem("logged_in_user_details", JSON.stringify(initialState));
+		localStorage.setItem("ecommerce_upgrad_logged_in_user_details", JSON.stringify(initialState));
 	};
 
 	if(initialState === null || initialState === undefined) {

@@ -11,7 +11,7 @@ const useService = () => {
 	const [message, setMessage] = useState(null);
 	const [level, setLevel] = useState(null);
 
-	const broadcastMessage = (messageBroadcast, messageLevel) => {
+	const showMessage = (messageBroadcast, messageLevel) => {
 		setMessage(messageBroadcast);
 		setLevel(messageLevel);
 	};
@@ -19,7 +19,7 @@ const useService = () => {
 	return {
 		ServicesCtx,
 		ServicesProvider: ({ children }) => (
-			<ServicesCtx.Provider value={{ message, level, broadcastMessage }}>
+			<ServicesCtx.Provider value={{ message, level, showMessage }}>
 				{children}
 			</ServicesCtx.Provider>
 		)
