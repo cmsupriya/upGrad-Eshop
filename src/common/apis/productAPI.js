@@ -33,7 +33,7 @@ export const fetchAllProducts = (accessToken) => {
 	return promise;
 };
 
-export const deleteProduct = (id, accessToken) => {
+export const viewProduct = (id, accessToken) => {
 	let promiseResolveRef = null;
 	let promiseRejectRef = null;
 	let promise = new Promise((resolve, reject) => {
@@ -41,14 +41,15 @@ export const deleteProduct = (id, accessToken) => {
 		promiseRejectRef = reject;
 	});
 	fetch('http://localhost:8080/api/products/'+id, {
-		method: 'DELETE',
+		method: 'GET',
 		headers: {
 			'x-auth-token': accessToken,
 		},
 	}).then((response) => {
-		response.text().then(() => {
+		response.json().then((json) => {
 			if(response.ok) {
 				promiseResolveRef({
+					value: json,
 					response: response,
 				});
 			} else {
@@ -67,7 +68,89 @@ export const deleteProduct = (id, accessToken) => {
 	return promise;
 };
 
-export const viewProduct = (id, accessToken) => {
+export const createProduct = (requestJson, accessToken) => {
+	let promiseResolveRef = null;
+	let promiseRejectRef = null;
+	let promise = new Promise((resolve, reject) => {
+		promiseResolveRef = resolve;
+		promiseRejectRef = reject;
+	});
+	fetch('http://localhost:8080/api/products', {
+		method: 'POST',
+		body: JSON.stringify(requestJson),
+		headers: {
+			'Content-type': 'application/json; charset=UTF-8',
+			'x-auth-token': accessToken,
+		},
+	}).then((response) => {
+		response.text().then((json) => {
+			if(response.ok) {
+				promiseResolveRef({
+					message: "Product " + requestJson.name + " added successfully.",
+					response: response,
+				});
+			} else {
+				let message = json.message;
+				if(message === undefined || message === null) {
+					message = "Server error occurred. Please try again.";
+				}
+				promiseRejectRef({
+					reason: message,
+					response: response,
+				});
+			}
+		});
+	}).catch((err) => {
+		promiseRejectRef({
+			reason: "Some error occurred. Please try again.",
+			response: err,
+		});
+	});
+	return promise;
+};
+
+export const modifyProduct = (requestJson, accessToken) => {
+	let promiseResolveRef = null;
+	let promiseRejectRef = null;
+	let promise = new Promise((resolve, reject) => {
+		promiseResolveRef = resolve;
+		promiseRejectRef = reject;
+	});
+	fetch('http://localhost:8080/api/products/' + requestJson.id, {
+		method: 'PUT',
+		body: JSON.stringify(requestJson),
+		headers: {
+			'Content-type': 'application/json; charset=UTF-8',
+			'x-auth-token': accessToken,
+		},
+	}).then((response) => {
+		response.text().then((json) => {
+			if(response.ok) {
+				promiseResolveRef({
+					message: "Product " + requestJson.name + " modified successfully.",
+					response: response,
+				});
+			} else {
+				let message = json.message;
+				if(message === undefined || message === null) {
+					message = "Server error occurred. Please try again.";
+				}
+				promiseRejectRef({
+					reason: message,
+					response: response,
+				});
+			}
+		});
+	}).catch((err) => {
+		promiseRejectRef({
+			reason: "Some error occurred. Please try again.",
+			response: err,
+		});
+	});
+	return promise;
+};
+
+export const deleteProduct = (id, accessToken) => {
 	let promiseResolveRef = null;
 	let promiseRejectRef = null;
 	let promise = new Promise((resolve, reject) => {
@@ -75,15 +158,14 @@ export const viewProduct = (id, accessToken) => {
 		promiseRejectRef = reject;
 	});
 	fetch('http://localhost:8080/api/products/'+id, {
-		method: 'GET',
+		method: 'DELETE',
 		headers: {
 			'x-auth-token': accessToken,
 		},
 	}).then((response) => {
-		response.json().then((json) => {
+		response.text().then(() => {
 			if(response.ok) {
 				promiseResolveRef({
-					value: json,
 					response: response,
 				});
 			} else {

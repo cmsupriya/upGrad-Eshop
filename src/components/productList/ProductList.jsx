@@ -22,7 +22,7 @@ const ProductList = ({ mode, productList, sortBy, category, reFetchAllData }) =>
 	const { accessToken, isAccessTokenValid, logout } = useContext(AuthCtx);
 	const [busy, setBusy] = useState(false);
 	const { ServicesCtx } = useService();
-	const { broadcastMessage } = useContext(ServicesCtx);
+	const { showMessage } = useContext(ServicesCtx);
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 
@@ -34,13 +34,7 @@ const ProductList = ({ mode, productList, sortBy, category, reFetchAllData }) =>
 
 	let getFilteredProductsBasedOnQuery = (list, str) => {
 		if (str !== null && str.length > 0) {
-			let filteredList = [];
-			for (let i = 0; i < list.length; i++) {
-				if (list[i].name.toUpperCase().indexOf(str.toUpperCase()) === 0) {
-					filteredList.push(list[i]);
-				}
-			}
-			return filteredList;
+			return list.filter((p) => { return p.name.toUpperCase().indexOf(str.toUpperCase()) === 0 });
 		} else {
 			return list;
 		}
@@ -70,16 +64,8 @@ const ProductList = ({ mode, productList, sortBy, category, reFetchAllData }) =>
 	}
 
 	let getFilteredProducts = (list, c) => {
-		if (c === undefined || c === null) {
-			c = "ALL";
-		}
-		let filteredList = [];
-		for (let i = 0; i < list.length; i++) {
-			if (c.toUpperCase() === "ALL" || c.toUpperCase() === list[i].category.toUpperCase()) {
-				filteredList.push(list[i]);
-			}
-		}
-		return filteredList;
+		if (c === undefined || c === null) c = "ALL";
+		return list.filter((p) => { return c.toUpperCase() === "ALL" || c.toUpperCase() === p.category.toUpperCase() });
 	}
 
 	let initiateDeleteProduct = (details) => {
@@ -106,11 +92,11 @@ const ProductList = ({ mode, productList, sortBy, category, reFetchAllData }) =>
 				});
 				setBusy(false);
 			}).catch((json) => {
-				broadcastMessage(json.reason, "error");
+				showMessage(json.reason, "error");
 				setBusy(false);
 			});
 		} else {
-			broadcastMessage("Session expired. Please login again!", "info");
+			showMessage("Session expired. Please login again!", "info");
 			logout().then(() => {
 				navigate("/login");
 			});
@@ -127,17 +113,17 @@ const ProductList = ({ mode, productList, sortBy, category, reFetchAllData }) =>
 		setDeleteModal(false);
 		if (isAccessTokenValid()) {
 			deleteProduct(product.id, accessToken).then(() => {
-				broadcastMessage("Product " + product.name + " deleted successfully.", "success");
+				showMessage("Product " + product.name + " deleted successfully.", "success");
 				setBusy(false);
 				setProduct(null);
 				reFetchAllData(accessToken);
 			}).catch((json) => {
-				broadcastMessage(json.reason, "error");
+				showMessage(json.reason, "error");
 				setBusy(false);
 				setProduct(null);
 			});
 		} else {
-			broadcastMessage("Session expired. Please login again!", "info");
+			showMessage("Session expired. Please login again!", "info");
 			logout().then(() => {
 				navigate("/login");
 			});

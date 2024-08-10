@@ -9,13 +9,15 @@ import Home from "../home/Home";
 import Login from "../login/Login";
 import SignUp from "../signup/SignUp";
 import Footer from "../footer/Footer";
-import ProtectedRoute from "../authRoute/AuthRoute";
+import AuthRoute from "../authRoute/AuthRoute";
 import Navbar from '../navbar/Navbar';
 import { initCatalog } from "../../common/store/actions/metadataAction";
 import useAuth from '../../common/hooks/useAuth';
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import useService from "../../common/hooks/useService";
+import ProductModify from '../productModify/ProductModify';
+import {createProduct, modifyProduct} from "../../common/apis/productAPI";
 
 const theme = createTheme({
 	palette: {
@@ -36,7 +38,7 @@ const App = () => {
 	const { ServicesCtx } = useService();
 	const { accessToken } = useContext(AuthCtx);
 	const { message, level, showMessage } = useContext(ServicesCtx);
-	const [ showInfo, setShowInfo ] = useState(false);
+	const [showInfo, setShowInfo] = useState(false);
 	const dispatch = useDispatch();
 
 	const initPageData = useCallback(() => {
@@ -45,7 +47,7 @@ const App = () => {
 
 	useEffect(() => {
 		initPageData();
-		if(message === null || level === null) {
+		if (message === null || level === null) {
 			setShowInfo(false);
 		} else {
 			setShowInfo(true);
@@ -73,9 +75,9 @@ const App = () => {
 							<Route
 								path="/home"
 								element={
-									<ProtectedRoute>
+									<AuthRoute>
 										<Home />
-									</ProtectedRoute>
+									</AuthRoute>
 								}
 							/>
 							<Route
@@ -88,6 +90,32 @@ const App = () => {
 								path="/signup"
 								element={
 									<SignUp />
+								}
+							/>
+							<Route
+								path="/product/add"
+								element={
+									<AuthRoute role={["ADMIN"]}>
+										<ProductModify
+											mode={"CREATE"}
+											buttonText="SAVE PRODUCT"
+											headingText="Add Product"
+											callbackFunction={createProduct}
+										/>
+									</AuthRoute>
+								}
+							/>
+							<Route
+								path="/product/modify"
+								element={
+									<AuthRoute role={["ADMIN"]}>
+										<ProductModify
+											mode={"MODIFY"}
+											buttonText="MODIFY PRODUCT"
+											headingText="Modify Product"
+											callbackFunction={modifyProduct}
+										/>
+									</AuthRoute>
 								}
 							/>
 						</Routes>
