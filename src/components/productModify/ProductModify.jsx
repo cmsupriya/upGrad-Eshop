@@ -11,6 +11,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {initCatalog} from "../../common/store/actions/metadataAction";
 import {connect} from "react-redux";
 import useService from "../../common/hooks/useService";
+import CustomSelect from "./customSelect/CustomSelect";
 import "./ProductModify.css";
 
 const ProductModify = ({categories, mode, headingText, buttonText, callbackFunction, jsonData, reFetchAllData}) => {
@@ -294,6 +295,20 @@ const ProductModify = ({categories, mode, headingText, buttonText, callbackFunct
 								onBlur={(event) => validateAndSave("name", event.target.value)}
 								error={formData.name.error}
 								helperText={formData.name.error && formData.name.errorMessage}
+							/>
+						</div>
+						<div>
+							<CustomSelect
+								id="category"
+								label="Category *"
+								variant="outlined"
+								fullWidth
+								value={formData.category.value}
+								onChange={onChangeCallback}
+								onBlur={onChangeCallback}
+								error={formData.category.error}
+								helperText={formData.category.error && formData.category.errorMessage}
+								options={categories}
 							/>
 						</div>
 						<div>
