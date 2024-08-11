@@ -1,73 +1,62 @@
-import jwt_decode from "jwt-decode";
-
-export const doLogin = (email, password) => {
+export const fetchAllAddresses = (accessToken) => {
 	let promiseResolveRef = null;
 	let promiseRejectRef = null;
 	let promise = new Promise((resolve, reject) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/auth/signin', {
-		method: 'POST',
-		body: JSON.stringify({
-			username: email,
-			password: password,
-		}),
+	fetch('http://localhost:8080/api/addresses', {
+		method: 'GET',
 		headers: {
-			'Content-type': 'application/json; charset=UTF-8',
+			'x-auth-token': accessToken,
 		},
 	}).then((response) => {
 		response.json().then((json) => {
 			if(response.ok) {
-				let token = response.headers.get("x-auth-token");
-				let decoded = jwt_decode(token);
 				promiseResolveRef({
-					username: json.email,
-					accessToken: token,
-					accessTokenTimeout: decoded.exp * 1000, //convert to epoch
-					roles: json.roles,
-					userId: json.id,
+					data: json,
 					response: response,
 				});
 			} else {
 				promiseRejectRef({
-					reason: "Server error occurred. Please try again.",
+					reason: "Server error occurred.",
 					response: response,
 				});
 			}
-		}).catch((error) => {
+		}).catch(() => {
 			promiseRejectRef({
-				reason: "Bad Credentials. Please try again.",
-				response: error,
+				reason: "Some error occurred.",
+				response: response,
 			});
 		});
 	}).catch((err) => {
 		promiseRejectRef({
-			reason: "Some error occurred. Please try again.",
+			reason: "Some error occurred.",
 			response: err,
 		});
 	});
 	return promise;
 };
 
-export const doSignup = (requestJson) => {
+export const createAddress = (requestJson, accessToken) => {
 	let promiseResolveRef = null;
 	let promiseRejectRef = null;
 	let promise = new Promise((resolve, reject) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/auth/signup', {
+	fetch('http://localhost:8080/api/addresses', {
 		method: 'POST',
 		body: JSON.stringify(requestJson),
 		headers: {
 			'Content-type': 'application/json; charset=UTF-8',
+			'x-auth-token': accessToken,
 		},
 	}).then((response) => {
-		response.json().then((json) => {
+		response.text().then((json) => {
 			if(response.ok) {
 				promiseResolveRef({
-					message: json.message,
+					message: "Product " + requestJson.name + " added successfully.",
 					response: response,
 				});
 			} else {
@@ -80,10 +69,10 @@ export const doSignup = (requestJson) => {
 					response: response,
 				});
 			}
-		}).catch((err) => {
+		}).catch(() => {
 			promiseRejectRef({
-				reason: "Some error occurred. Please try again.",
-				response: err,
+				reason: "Some error occurred.",
+				response: response,
 			});
 		});
 	}).catch((err) => {

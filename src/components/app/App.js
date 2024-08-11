@@ -17,7 +17,9 @@ import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import useService from "../../common/hooks/useService";
 import ProductModify from '../productModify/ProductModify';
-import {createProduct, modifyProduct} from "../../common/apis/productAPI";
+import { createProduct, modifyProduct } from "../../common/apis/productAPI";
+import ProductView from '../productView/ProductView';
+import PlaceOrder from '../placeOrder/PlaceOrder';
 
 const theme = createTheme({
 	palette: {
@@ -115,6 +117,22 @@ const App = () => {
 											headingText="Modify Product"
 											callbackFunction={modifyProduct}
 										/>
+									</AuthRoute>
+								}
+							/>
+							<Route
+								path="/product/view"
+								element={
+									<AuthRoute >
+										<ProductView />
+									</AuthRoute>
+								}
+							/>
+							<Route
+								path="/product/order"
+								element={
+									<AuthRoute>
+										<PlaceOrder />
 									</AuthRoute>
 								}
 							/>

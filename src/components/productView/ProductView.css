@@ -1,0 +1,6 @@
+.product-view {
+    div:nth-child(1) > div {
+        display: flex;
+        justify-content: center;
+    }
+}
