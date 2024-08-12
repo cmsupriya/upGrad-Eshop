@@ -3,7 +3,6 @@ import {doLogin} from "../apis/authAPI";
 
 const AuthCtx = createContext();
 
-//Note: this hook is used for auth purposes and will be saved in browser cache
 const useAuth = () => {
 
 	let initialState = localStorage.getItem("logged_in_user_details");

@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "./common/store";
 import useAuth from './common/hooks/useAuth';
 import useService from './common/hooks/useService';
+import config from './config';
 
 const Index = () => {
 

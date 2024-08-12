@@ -5,7 +5,7 @@ export const fetchAllProducts = (accessToken) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/products', {
+	fetch(global.config.apiURL + '/products', {
 		method: 'GET',
 		headers: {
 			'x-auth-token': accessToken,
@@ -40,7 +40,7 @@ export const viewProduct = (id, accessToken) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/products/'+id, {
+	fetch(global.config.apiURL + '/products/'+id, {
 		method: 'GET',
 		headers: {
 			'x-auth-token': accessToken,
@@ -75,7 +75,7 @@ export const createProduct = (requestJson, accessToken) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/products', {
+	fetch(global.config.apiURL + '/products', {
 		method: 'POST',
 		body: JSON.stringify(requestJson),
 		headers: {
@@ -116,7 +116,7 @@ export const modifyProduct = (requestJson, accessToken) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/products/' + requestJson.id, {
+	fetch(global.config.apiURL + '/products/' + requestJson.id, {
 		method: 'PUT',
 		body: JSON.stringify(requestJson),
 		headers: {
@@ -157,7 +157,7 @@ export const deleteProduct = (id, accessToken) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/products/'+id, {
+	fetch(global.config.apiURL + '/products/'+id, {
 		method: 'DELETE',
 		headers: {
 			'x-auth-token': accessToken,

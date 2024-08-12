@@ -5,7 +5,7 @@ export const fetchAllCategories = (accessToken) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/products/categories', {
+	fetch(global.config.apiURL + '/products/categories', {
 		method: 'GET',
 		headers: {
 			'x-auth-token': accessToken,

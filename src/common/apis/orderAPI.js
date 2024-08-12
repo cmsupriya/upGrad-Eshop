@@ -5,7 +5,7 @@ export const createOrder = (requestJson, accessToken) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/orders', {
+	fetch(global.config.apiURL + '/orders', {
 		method: 'POST',
 		body: JSON.stringify(requestJson),
 		headers: {

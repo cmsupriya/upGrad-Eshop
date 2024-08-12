@@ -4,14 +4,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
-import {useState, useContext, useEffect} from "react";
+import { useState, useContext, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import useAuth from "../../common/hooks/useAuth";
-import {useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useService from "../../common/hooks/useService";
+import "./Login.css";
 
 const Login = () => {
 
@@ -30,13 +31,13 @@ const Login = () => {
 
 	const [formData, setFormData] = useState(initialState);
 	const [busy, setBusy] = useState(false);
-	const {AuthCtx} = useAuth();
-	const {login, loggedInUser} = useContext(AuthCtx);
+	const { AuthCtx } = useAuth();
+	const { login, loggedInUser } = useContext(AuthCtx);
 	const history = useNavigate();
 	const location = useLocation();
-	const {from} = (location && location.state) || {from : {pathname: "/home"}};
-	const {ServicesCtx} = useService();
-	const {showMessage} = useContext(ServicesCtx);
+	const { from } = (location && location.state) || { from: { pathname: "/home" } };
+	const { ServicesCtx } = useService();
+	const { showMessage } = useContext(ServicesCtx);
 
 	useEffect(() => {
 		loggedInUser && history(from, { replace: true });
@@ -49,7 +50,7 @@ const Login = () => {
 		};
 		let requestJson = {};
 		let validDetails = true;
-		for(let k in formData) {
+		for (let k in formData) {
 			let json = getValidity(k, formData[k].value);
 			data[k] = {
 				value: data[k].value,
@@ -57,14 +58,13 @@ const Login = () => {
 				errorMessage: json.message,
 			};
 			validDetails = validDetails && json.valid;
-			if(json.valid) {
+			if (json.valid) {
 				requestJson[k] = data[k].value;
 			}
 		}
 		setFormData(data);
-		if(validDetails) {
+		if (validDetails) {
 			login(requestJson.username, requestJson.password).then(() => {
-				// do nothing
 				showMessage("Login successful", "success");
 				setBusy(false);
 			}).catch(json => {
@@ -84,13 +84,13 @@ const Login = () => {
 	let getValidity = (field, value) => {
 		let valid = true;
 		let message = null;
-		if(value == null || value.length === 0) {
+		if (value == null || value.length === 0) {
 			valid = false;
 			message = "This field is required.";
 		} else {
 			switch (field) {
 				case "username": {
-					if(value.length > 255) {
+					if (value.length > 255) {
 						valid = false;
 						message = "Email can be of length 255 characters";
 					} else {
@@ -106,7 +106,7 @@ const Login = () => {
 					}
 					break;
 				}
-				default : {
+				default: {
 					return;
 				}
 			}
@@ -133,30 +133,24 @@ const Login = () => {
 	let saveOnFieldChange = (field, value) => {
 		setFormData({
 			...formData,
-			[field]:{
+			[field]: {
 				...formData[field],
 				value
 			}
 		});
 	};
 
-	if(loggedInUser === null) {
+	if (loggedInUser === null) {
 		return (
-			<Box sx={{flexGrow: 1}}>
+			<Box sx={{ flexGrow: 1 }}>
 				<Grid container spacing={1}>
 					<Grid container item spacing={3}>
-						<Grid item xs={4}/>
-						<Grid item xs={4}>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "10%"}}>
-								<LockOutlinedIcon style={{
-									display: 'inline-block',
-									borderRadius: '60px',
-									padding: '0.6em 0.6em',
-									color: '#ffffff',
-									background: "#f50057"
-								}}/>
+						<Grid item xs={4} />
+						<Grid item xs={4} className="login">
+							<div>
+								<LockOutlinedIcon />
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center'}}>
+							<div>
 								<Typography
 									variant="subtitle1"
 									noWrap
@@ -168,42 +162,42 @@ const Login = () => {
 									Sign in
 								</Typography>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<TextField id="username"
-										   label="Email Address *"
-										   variant="outlined"
-										   fullWidth
-										   type="email"
-										   value={formData.username.value}
-										   onChange={(event) => saveOnFieldChange("username", event.target.value)}
-										   onBlur={(event) => validateAndSaveLoginData("username", event.target.value)}
-										   error={formData.username.error}
-										   helperText={formData.username.error && formData.username.errorMessage}
+									label="Email Address *"
+									variant="outlined"
+									fullWidth
+									type="email"
+									value={formData.username.value}
+									onChange={(event) => saveOnFieldChange("username", event.target.value)}
+									onBlur={(event) => validateAndSaveLoginData("username", event.target.value)}
+									error={formData.username.error}
+									helperText={formData.username.error && formData.username.errorMessage}
 								/>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<TextField id="password"
-										   label="Password *"
-										   variant="outlined"
-										   fullWidth
-										   type="password"
-										   value={formData.password.value}
-										   onChange={(event) => saveOnFieldChange("password", event.target.value)}
-										   onBlur={(event) => validateAndSaveLoginData("password", event.target.value)}
-										   error={formData.password.error}
-										   helperText={formData.password.error && formData.password.errorMessage}
+									label="Password *"
+									variant="outlined"
+									fullWidth
+									type="password"
+									value={formData.password.value}
+									onChange={(event) => saveOnFieldChange("password", event.target.value)}
+									onBlur={(event) => validateAndSaveLoginData("password", event.target.value)}
+									error={formData.password.error}
+									helperText={formData.password.error && formData.password.errorMessage}
 								/>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<Button variant="contained"
-										color="primary"
-										fullWidth
-										onClick={validateAndLoginData}
+									color="primary"
+									fullWidth
+									onClick={validateAndLoginData}
 								>
 									SIGN IN
 								</Button>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'left', marginTop: "30px"}}>
+							<div style={{ display: 'flex', justifyContent: 'left', marginTop: "30px" }}>
 								<Link to="/signup">
 									<Typography variant="body1">
 										Don't have an account? Sign Up
@@ -211,20 +205,20 @@ const Login = () => {
 								</Link>
 							</div>
 						</Grid>
-						<Grid item xs={4}/>
+						<Grid item xs={4} />
 					</Grid>
 				</Grid>
 				<Backdrop
-					sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
+					sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
 					open={busy}
 				>
-					<CircularProgress color="inherit"/>
+					<CircularProgress color="inherit" />
 				</Backdrop>
 			</Box>
 		);
 	} else {
 		return (
-			<Navigate to="/home"/>
+			<Navigate to="/home" />
 		);
 	}
 };

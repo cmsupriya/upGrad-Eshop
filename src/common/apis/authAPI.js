@@ -7,7 +7,7 @@ export const doLogin = (email, password) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/auth/signin', {
+	fetch(global.config.apiURL + '/auth/signin', {
 		method: 'POST',
 		body: JSON.stringify({
 			username: email,
@@ -24,7 +24,7 @@ export const doLogin = (email, password) => {
 				promiseResolveRef({
 					username: json.email,
 					accessToken: token,
-					accessTokenTimeout: decoded.exp * 1000, //convert to epoch
+					accessTokenTimeout: decoded.exp * 1000,
 					roles: json.roles,
 					userId: json.id,
 					response: response,
@@ -57,7 +57,7 @@ export const doSignup = (requestJson) => {
 		promiseResolveRef = resolve;
 		promiseRejectRef = reject;
 	});
-	fetch('http://localhost:8080/api/auth/signup', {
+	fetch(global.config.apiURL + '/auth/signup', {
 		method: 'POST',
 		body: JSON.stringify(requestJson),
 		headers: {

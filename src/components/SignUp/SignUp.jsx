@@ -1,18 +1,17 @@
-//Sign Up Page for registering regular users/customers
-
 import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {Link, Navigate} from "react-router-dom";
-import {useContext, useState} from "react";
+import { Link, Navigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { doSignup } from "../../common/apis/authAPI";
 import useAuth from "../../common/hooks/useAuth";
 import useService from "../../common/hooks/useService";
+import "./SignUp.css";
 
 const SignUp = () => {
 
@@ -51,10 +50,10 @@ const SignUp = () => {
 
 	const [formData, setFormData] = useState(initialState);
 	const [busy, setBusy] = useState(false);
-	const {ServicesCtx} = useService();
-	const {showMessage} = useContext(ServicesCtx);
-	const {AuthCtx} = useAuth();
-	const {loggedInUser} = useContext(AuthCtx);
+	const { ServicesCtx } = useService();
+	const { showMessage } = useContext(ServicesCtx);
+	const { AuthCtx } = useAuth();
+	const { loggedInUser } = useContext(AuthCtx);
 
 	let validateData = () => {
 		setBusy(true);
@@ -63,7 +62,7 @@ const SignUp = () => {
 		};
 		let requestJson = {};
 		let valid = true;
-		for(let i in formData) {
+		for (let i in formData) {
 			let json = getValidity(i, formData[i].value);
 			data[i] = {
 				value: data[i].value,
@@ -71,12 +70,12 @@ const SignUp = () => {
 				errorMessage: json.message,
 			};
 			valid = valid && json.valid;
-			if(json.valid) {
+			if (json.valid) {
 				requestJson[i] = data[i].value;
 			}
 		}
 		setFormData(data);
-		if(valid) {
+		if (valid) {
 			doSignup(requestJson).then(json => {
 				showMessage(json.message, "success");
 				setBusy(false);
@@ -98,13 +97,13 @@ const SignUp = () => {
 	let getValidity = (field, value) => {
 		let valid = true;
 		let message = null;
-		if(value == null || value.length === 0) {
+		if (value == null || value.length === 0) {
 			valid = false;
 			message = "This field is required.";
 		} else {
 			switch (field) {
 				case "firstName": {
-					if(value.length > 255) {
+					if (value.length > 255) {
 						valid = false;
 						message = "First name can be of length 255 characters";
 					} else {
@@ -114,7 +113,7 @@ const SignUp = () => {
 					break;
 				}
 				case "lastName": {
-					if(value.length > 255) {
+					if (value.length > 255) {
 						valid = false;
 						message = "Last name can be of length 255 characters";
 					} else {
@@ -124,7 +123,7 @@ const SignUp = () => {
 					break;
 				}
 				case "email": {
-					if(value.length > 255) {
+					if (value.length > 255) {
 						valid = false;
 						message = "Email can be of length 255 characters";
 					} else {
@@ -153,7 +152,7 @@ const SignUp = () => {
 					message = "Please enter valid contact number.";
 					break;
 				}
-				default : {
+				default: {
 					return;
 				}
 			}
@@ -180,30 +179,30 @@ const SignUp = () => {
 	let saveOnChange = (field, value) => {
 		setFormData({
 			...formData,
-			[field]:{
+			[field]: {
 				...formData[field],
 				value
 			}
 		});
 	};
 
-	if(loggedInUser === null) {
+	if (loggedInUser === null) {
 		return (
-			<Box sx={{flexGrow: 1}}>
+			<Box sx={{ flexGrow: 1 }}>
 				<Grid container spacing={1}>
 					<Grid container item spacing={3}>
-						<Grid item xs={4}/>
-						<Grid item xs={4}>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "10%"}}>
+						<Grid item xs={4} />
+						<Grid item xs={4} className="signup">
+							<div>
 								<LockOutlinedIcon style={{
 									display: 'inline-block',
 									borderRadius: '60px',
 									padding: '0.6em 0.6em',
 									color: '#ffffff',
 									background: "#f50057"
-								}}/>
+								}} />
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center'}}>
+							<div>
 								<Typography
 									variant="subtitle1"
 									noWrap
@@ -215,91 +214,91 @@ const SignUp = () => {
 									Sign up
 								</Typography>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<TextField id="firstName"
-										   label="First Name *"
-										   variant="outlined"
-										   fullWidth
-										   value={formData.firstName.value}
-										   onChange={(event) => saveOnChange("firstName", event.target.value)}
-										   onBlur={(event) => validateAndSaveInMemory("firstName", event.target.value)}
-										   error={formData.firstName.error}
-										   helperText={formData.firstName.error && formData.firstName.errorMessage}
+									label="First Name *"
+									variant="outlined"
+									fullWidth
+									value={formData.firstName.value}
+									onChange={(event) => saveOnChange("firstName", event.target.value)}
+									onBlur={(event) => validateAndSaveInMemory("firstName", event.target.value)}
+									error={formData.firstName.error}
+									helperText={formData.firstName.error && formData.firstName.errorMessage}
 								/>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<TextField id="lastName"
-										   label="Last Name *"
-										   variant="outlined"
-										   fullWidth
-										   value={formData.lastName.value}
-										   onChange={(event) => saveOnChange("lastName", event.target.value)}
-										   onBlur={(event) => validateAndSaveInMemory("lastName", event.target.value)}
-										   error={formData.lastName.error}
-										   helperText={formData.lastName.error && formData.lastName.errorMessage}
+									label="Last Name *"
+									variant="outlined"
+									fullWidth
+									value={formData.lastName.value}
+									onChange={(event) => saveOnChange("lastName", event.target.value)}
+									onBlur={(event) => validateAndSaveInMemory("lastName", event.target.value)}
+									error={formData.lastName.error}
+									helperText={formData.lastName.error && formData.lastName.errorMessage}
 								/>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<TextField id="email"
-										   label="Email Address *"
-										   variant="outlined"
-										   fullWidth
-										   type="email"
-										   value={formData.email.value}
-										   onChange={(event) => saveOnChange("email", event.target.value)}
-										   onBlur={(event) => validateAndSaveInMemory("email", event.target.value)}
-										   error={formData.email.error}
-										   helperText={formData.email.error && formData.email.errorMessage}
+									label="Email Address *"
+									variant="outlined"
+									fullWidth
+									type="email"
+									value={formData.email.value}
+									onChange={(event) => saveOnChange("email", event.target.value)}
+									onBlur={(event) => validateAndSaveInMemory("email", event.target.value)}
+									error={formData.email.error}
+									helperText={formData.email.error && formData.email.errorMessage}
 								/>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<TextField id="password"
-										   label="Password *"
-										   variant="outlined"
-										   fullWidth
-										   type="password"
-										   value={formData.password.value}
-										   onChange={(event) => saveOnChange("password", event.target.value)}
-										   onBlur={(event) => validateAndSaveInMemory("password", event.target.value)}
-										   error={formData.password.error}
-										   helperText={formData.password.error && formData.password.errorMessage}
+									label="Password *"
+									variant="outlined"
+									fullWidth
+									type="password"
+									value={formData.password.value}
+									onChange={(event) => saveOnChange("password", event.target.value)}
+									onBlur={(event) => validateAndSaveInMemory("password", event.target.value)}
+									error={formData.password.error}
+									helperText={formData.password.error && formData.password.errorMessage}
 								/>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<TextField id="confirmPassword"
-										   label="Confirm Password *"
-										   variant="outlined"
-										   fullWidth
-										   type="password"
-										   value={formData.confirmPassword.value}
-										   onChange={(event) => saveOnChange("confirmPassword", event.target.value)}
-										   onBlur={(event) => validateAndSaveInMemory("confirmPassword", event.target.value)}
-										   error={formData.confirmPassword.error}
-										   helperText={formData.confirmPassword.error && formData.confirmPassword.errorMessage}
+									label="Confirm Password *"
+									variant="outlined"
+									fullWidth
+									type="password"
+									value={formData.confirmPassword.value}
+									onChange={(event) => saveOnChange("confirmPassword", event.target.value)}
+									onBlur={(event) => validateAndSaveInMemory("confirmPassword", event.target.value)}
+									error={formData.confirmPassword.error}
+									helperText={formData.confirmPassword.error && formData.confirmPassword.errorMessage}
 								/>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<TextField id="contactNumber"
-										   label="Contact Number *"
-										   variant="outlined"
-										   fullWidth
-										   value={formData.contactNumber.value}
-										   onChange={(event) => saveOnChange("contactNumber", event.target.value)}
-										   onBlur={(event) => validateAndSaveInMemory("contactNumber", event.target.value)}
-										   error={formData.contactNumber.error}
-										   helperText={formData.contactNumber.error && formData.contactNumber.errorMessage}
+									label="Contact Number *"
+									variant="outlined"
+									fullWidth
+									value={formData.contactNumber.value}
+									onChange={(event) => saveOnChange("contactNumber", event.target.value)}
+									onBlur={(event) => validateAndSaveInMemory("contactNumber", event.target.value)}
+									error={formData.contactNumber.error}
+									helperText={formData.contactNumber.error && formData.contactNumber.errorMessage}
 								/>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'center', marginTop: "30px"}}>
+							<div>
 								<Button variant="contained"
-										color="primary"
-										fullWidth
-										onClick={validateData}
+									color="primary"
+									fullWidth
+									onClick={validateData}
 								>
 									SIGN UP
 								</Button>
 							</div>
-							<div style={{display: 'flex', justifyContent: 'right', marginTop: "30px"}}>
+							<div>
 								<Link to="/login">
 									<Typography variant="body1">
 										Already have an account? Sign in
@@ -307,20 +306,20 @@ const SignUp = () => {
 								</Link>
 							</div>
 						</Grid>
-						<Grid item xs={4}/>
+						<Grid item xs={4} />
 					</Grid>
 				</Grid>
 				<Backdrop
-					sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
+					sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
 					open={busy}
 				>
-					<CircularProgress color="inherit"/>
+					<CircularProgress color="inherit" />
 				</Backdrop>
 			</Box>
 		);
 	} else {
 		return (
-			<Navigate to="/home"/>
+			<Navigate to="/home" />
 		);
 	}
 };

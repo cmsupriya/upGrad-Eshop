@@ -1,5 +1,3 @@
-//Note: we don't need to save initial data in browser cache, as according to question
-//only user login data must be saved in browser cache
 let initialState = {
 	selectedCategory: null,
 	categories: [],
@@ -47,7 +45,7 @@ const actionReducer = (state = initialState, action) => {
 			data = state;
 		}
 	}
-	localStorage.setItem("ecommerce_upgrad_metadata", JSON.stringify(data));
+	localStorage.setItem("metadata", JSON.stringify(data));
 	return data;
 };
 

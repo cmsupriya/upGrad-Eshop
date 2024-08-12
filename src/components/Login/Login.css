@@ -1,76 +1,21 @@
-.mainContainer {
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin-top: 60px;
-}
+.login {
+    > div:nth-child(2) {
+        margin-top: 0;
+    }
 
-.titleContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    div:nth-child(1) {
-        background-color: #F50057;
-        padding: 10px;
-        border-radius: 25px;
+    > div {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
 
         svg {
-            fill: white;
+            display: inline-block;
+            border-radius: 60px;
+            padding: 0.6em;
+            color: rgb(255, 255, 255);
+            background: rgb(245, 0, 87);
+            width: 55px;
+            height: 55px;
         }
     }
-
-    div:nth-child(2) {
-        font-size: 22px;
-    }
-}
-
-.resultContainer,
-.historyItem {
-    flex-direction: row;
-    display: flex;
-    width: 400px;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.historyContainer {
-    flex-direction: column;
-    display: flex;
-    height: 200px;
-    align-items: center;
-    flex-grow: 5;
-    justify-content: flex-start;
-}
-
-.buttonContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 260px;
-}
-
-.inputContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-}
-
-.inputContainer>.errorLabel {
-    color: red;
-    font-size: 12px;
-}
-
-.inputBox {
-    height: 48px;
-    width: 400px;
-    font-size: large;
-    border-radius: 8px;
-    border: 1px solid grey;
-    padding-left: 8px;
 }
