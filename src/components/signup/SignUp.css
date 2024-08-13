@@ -1,0 +1,25 @@
+.signup {
+    > div:nth-child(10) {
+        justify-content: right;
+    }
+
+    > div:nth-child(2) {
+        margin-top: 0;
+    }
+
+    > div {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+
+        svg {
+            display: inline-block;
+            border-radius: 60px;
+            padding: 0.6em;
+            color: rgb(255, 255, 255);
+            background: rgb(245, 0, 87);
+            width: 55px;
+            height: 55px;
+        }
+    }
+}
