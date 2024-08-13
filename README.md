@@ -21,8 +21,8 @@ React app uses the ecommerce-upgrad-master backend java application for API inte
 
 ## Notes: 
 
-1. While calling the Java signin POST API (http://localhost:8080/api/auth/signin), the auth token is being returned in the response header in controllers/AuthController.java file (line: 71).
+1. While calling the Java signin POST API (http://localhost:8080/api/auth/signin), the auth token is being returned in the response header in controllers/AuthController.java file.
 
-2. But the auth token is inaccessible in the response header. To make it accessible, added below line of code to the backend java application in controllers/AuthController.java file.\
+2. But the auth token is inaccessible in the response header. To make it accessible, added below line of code to the backend java application in controllers/AuthController.java file  (line: 71).\
 
 #### responseHeaders.set("Access-Control-Expose-Headers", "x-auth-token");
